@@ -1,0 +1,184 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>TunePort</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="titlebar">
+    <span class="appicon"><svg viewBox="0 0 16 16"><rect x="1" y="6" width="2" height="4" rx="1"/><rect x="4.5" y="3" width="2" height="10" rx="1"/><rect x="8" y="5" width="2" height="6" rx="1"/><rect x="11.5" y="2" width="2" height="12" rx="1"/></svg></span>
+    <span class="title">TunePort</span>
+    <span class="sub" id="ver">本地转换 · v1.0</span>
+    <span class="spacer"></span>
+    <button class="iconbtn" id="btnSettings" title="设置">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="2.2"/><path d="M8 1.6v1.6M8 12.8v1.6M1.6 8h1.6M12.8 8h1.6M3.5 3.5l1.1 1.1M11.4 11.4l1.1 1.1M12.5 3.5l-1.1 1.1M4.6 11.4l-1.1 1.1"/></svg>
+    </button>
+    <div class="winbtns">
+      <button id="btnMin" title="最小化"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5h6" stroke="currentColor" stroke-width="1.2"/></svg></button>
+      <button id="btnMax" title="最大化"><svg width="10" height="10" viewBox="0 0 10 10"><rect x="2.5" y="2.5" width="5" height="5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></button>
+      <button id="btnClose" class="close" title="关闭"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2.5 2.5l5 5M7.5 2.5l-5 5" stroke="currentColor" stroke-width="1.2"/></svg></button>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <button class="btn" id="btnAddFiles">
+      <svg viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></svg>添加文件
+    </button>
+    <button class="btn" id="btnAddFolder" title="可按住 Ctrl / Shift 一次选多个文件夹">
+      <svg viewBox="0 0 16 16"><path d="M1.8 4.2h4.3l1.3 1.5h6.8v6.6a1 1 0 0 1-1 1H2.8a1 1 0 0 1-1-1z"/></svg>添加文件夹
+    </button>
+    <span class="sep"></span>
+    <button class="outbtn" id="btnOut">
+      输出:<b id="outLabel">同源目录</b>
+      <svg viewBox="0 0 16 16"><path d="M5 6.5l3 3 3-3"/></svg>
+    </button>
+    <label class="switch-wrap" id="lrcWrap" title="转换时把与源文件同名的 .lrc 一起复制到输出目录">
+      <span class="switch on" id="chkLrc"><i></i></span>
+      <span id="lrcLabel">同时复制歌词</span>
+    </label>
+    <span class="grow"></span>
+    <button class="btn ghost" id="btnRetryAll" disabled>重试失败</button>
+    <button class="btn ghost" id="btnClear" disabled>清空列表</button>
+    <button class="btn primary" id="btnStart">
+      <svg viewBox="0 0 16 16" id="startIcon"><path d="M5 3.2l8 4.8-8 4.8z"/></svg>
+      <span id="startLabel">开始</span>
+    </button>
+  </div>
+
+  <div class="content" id="content">
+    <div class="main">
+      <div class="alert" id="alert">
+        <span class="msg"><b id="alertN">0</b> 个文件转换失败</span>
+        <button id="alertFilter">只看这些</button>
+        <button id="alertRetry">全部重试</button>
+      </div>
+
+      <div class="filters">
+        <button class="chip on" data-f="all">全部 <span class="n" id="cAll">0</span></button>
+        <button class="chip" data-f="run">进行中 <span class="n" id="cRun">0</span></button>
+        <button class="chip danger" data-f="fail">失败 <span class="n" id="cFail">0</span></button>
+        <button class="chip" data-f="done">已完成 <span class="n" id="cDone">0</span></button>
+        <button class="chip" data-f="skip">已存在 <span class="n" id="cSkip">0</span></button>
+        <span class="grow"></span>
+        <label class="search">
+          <svg viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2l3 3"/></svg>
+          <input id="q" placeholder="搜索文件名" autocomplete="off">
+        </label>
+      </div>
+
+      <div class="thead">
+        <span>文件名</span>
+        <span>格式</span>
+        <span>歌词</span>
+        <span style="text-align:right;padding-right:10px">大小</span>
+        <span>状态</span>
+        <span style="text-align:right;padding-right:6px">耗时</span>
+      </div>
+
+      <div class="rows" id="rows">
+        <div class="empty" id="empty">
+          <div class="emptybox">
+            <div class="ring"><svg viewBox="0 0 24 24"><path d="M12 16V5m0 0L8 9m4-4l4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></div>
+            <h3>把 .ncm / .kwm / .mflac / .qmc / .mgg 拖进来</h3>
+            <p>全程本地处理,不联网、不上传、不改动源文件</p>
+            <div class="fmts"><span class="badge">NCM</span><span class="badge">KWM</span><span class="badge">QMC</span><span class="badge">MFLAC</span><span class="badge">MP3</span><span class="badge">FLAC</span><span class="badge">OGG</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="detail" id="detail"></aside>
+  </div>
+
+  <footer class="statusbar">
+    <div class="prog"><i id="progBar"></i></div>
+    <span class="stat"><i class="d" style="background:var(--ok)"></i><b id="sDone">0</b> 完成</span>
+    <span class="stat"><i class="d" style="background:var(--err)"></i><b id="sFail">0</b> 失败</span>
+    <span class="stat"><i class="d" style="background:var(--text-3)"></i><b id="sSkip">0</b> 跳过</span>
+    <span class="stat" id="sLrcStat" style="display:none"><i class="d" style="background:var(--accent)"></i><b id="sLrc">0</b> 歌词</span>
+    <span class="grow"></span>
+    <span class="num" id="sPct">0%</span>
+    <span class="num" id="sCount">0 / 0</span>
+    <span id="sEta">尚未开始</span>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="player" id="playerBar" hidden>
+    <span class="p-icon">♪</span>
+    <span class="p-title" id="pTitle">—</span>
+    <audio id="pAudio" controls preload="auto"></audio>
+    <button class="p-close" id="pClose" title="关闭播放器">✕</button>
+  </div>
+</div>
+
+<!-- 设置 -->
+<div class="mask" id="setMask">
+  <div class="modal">
+    <div class="mhead"><b>设置</b><button class="mclose" id="setClose">✕</button></div>
+    <div class="mbody">
+      <div class="msec">输出</div>
+      <div class="mrow">
+        <label>命名模板</label>
+        <div class="mctl">
+          <input type="text" id="setTemplate" spellcheck="false">
+          <div class="hint">可用变量:{artist} {title} {album} —— 必须包含 {title}</div>
+        </div>
+      </div>
+      <div class="mrow">
+        <label>同名文件</label>
+        <div class="mctl">
+          <select id="setOverwrite">
+            <option value="rename">追加 (2)</option>
+            <option value="skip">跳过</option>
+            <option value="overwrite">覆盖</option>
+          </select>
+        </div>
+      </div>
+      <div class="mrow">
+        <label>输出位置</label>
+        <div class="mctl">
+          <div class="pathrow">
+            <input id="setOutDir" readonly placeholder="同源目录(默认)">
+            <button class="mini" id="setPickDir">选择…</button>
+            <button class="mini" id="setSameDir">同源</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="msec">性能</div>
+      <div class="mrow">
+        <label>并发线程</label>
+        <div class="mctl">
+          <div class="pathrow">
+            <input type="range" id="setThreads" min="1" max="16" value="8">
+            <span class="num" id="setThreadsVal">8</span>
+          </div>
+          <div class="hint">机械硬盘建议 2–4;SSD 可以拉满</div>
+        </div>
+      </div>
+
+      <div class="msec">行为</div>
+      <div class="mrow">
+        <label>完成后打开输出目录</label>
+        <div class="mctl"><span class="switch" id="setOpenAfter"><i></i></span></div>
+      </div>
+      <div class="mrow">
+        <label>默认同时复制歌词</label>
+        <div class="mctl"><span class="switch" id="setCopyLrc"><i></i></span></div>
+      </div>
+    </div>
+    <div class="mfoot">
+      <button class="btn ghost" id="setReset">恢复默认</button>
+      <span class="grow"></span>
+      <button class="btn ghost" id="setCancel">取消</button>
+      <button class="btn primary" id="setSave">保存</button>
+    </div>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

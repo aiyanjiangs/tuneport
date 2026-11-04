@@ -1,0 +1,17 @@
+{
+  "name": "tuneport",
+  "version": "1.0.0",
+  "description": "TunePort —— .ncm 音频转换工具(Tauri 2 + Rust)",
+  "private": true,
+  "scripts": {
+    "test": "node test/ui.js && node test/ui-tauri.js",
+    "dev": "node node_modules/@tauri-apps/cli/tauri.js dev",
+    "build": "node node_modules/@tauri-apps/cli/tauri.js build",
+    "samples": "node tools/make-samples.js tmp-samples",
+    "icons": "node tools/make-icons.js"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.12.4",
+    "jsdom": "^24.1.3"
+  }
+}

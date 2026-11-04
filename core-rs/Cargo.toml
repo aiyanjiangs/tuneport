@@ -1,0 +1,11 @@
+﻿[package]
+name = "tuneport-core"
+version = "0.1.0"
+edition = "2021"
+description = "ncm / qmc 解析解密 + 标签写入 + 批量引擎(无第三方标签库)"
+
+[dependencies]
+aes = "0.8"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tc_tea = { version = "0.2", default-features = false }

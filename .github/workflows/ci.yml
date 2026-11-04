@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 安装 Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: 缓存 Cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            core-rs
+            src-tauri
+
+      - name: 安装 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: 核心库测试
+        run: cargo test --manifest-path core-rs/Cargo.toml
+
+      - name: 外壳测试
+        run: cargo test --manifest-path src-tauri/Cargo.toml
+
+      - name: 安装前端依赖
+        run: npm ci
+
+      - name: 界面测试
+        run: npm test

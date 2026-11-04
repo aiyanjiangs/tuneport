@@ -1,0 +1,12 @@
+* text=auto eol=lf
+
+# Windows 批处理必须用 CRLF,否则会因为换行符出错
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# 二进制
+*.png binary
+*.ico binary
+*.exe binary
+*.zip binary
+*.log binary
