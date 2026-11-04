@@ -1,5 +1,9 @@
 # TunePort
 
+[![CI](https://github.com/aiyanjiangs/tuneport/actions/workflows/ci.yml/badge.svg)](https://github.com/aiyanjiangs/tuneport/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/aiyanjiangs/tuneport?label=release)](https://github.com/aiyanjiangs/tuneport/releases/latest)
+[![License](https://img.shields.io/github/license/aiyanjiangs/tuneport)](LICENSE)
+
 一个 Windows 桌面的**本地音频格式转换工具**：把音乐客户端下载到本地的音频文件，还原成原始的 MP3 / FLAC / OGG，并保证标签、歌词、文件名都完整。
 
 全程离线：不联网、不上传、不下载任何内容、不改动源文件。
@@ -43,18 +47,25 @@
 
 ## 使用
 
-**安装版**：下载 `TunePort_x.y.z_x64-setup.exe`，双击安装（装到用户目录，不需要管理员权限）。
+前往 **[Releases](https://github.com/aiyanjiangs/tuneport/releases/latest)** 下载：
 
-**绿色版**：下载 zip 解压即用，不写注册表。
+| 文件 | 说明 |
+|---|---|
+| [TunePort-1.0.0-x64-setup.exe](https://github.com/aiyanjiangs/tuneport/releases/latest/download/TunePort-1.0.0-x64-setup.exe) | 安装版，装到用户目录，**不需要管理员权限** |
+| [TunePort-1.0.0-portable.zip](https://github.com/aiyanjiangs/tuneport/releases/latest/download/TunePort-1.0.0-portable.zip) | 绿色版，解压即用，不写注册表 |
+
+> 上表用的是固定版本号。新版本发布后如果没更新这里，以 Releases 页面上的文件名为准。
 
 系统要求：64 位 Windows 10 / 11。唯一依赖是系统自带的 **WebView2**（Win10 1803+ / Win11 均自带）。
+
+首次运行若被 SmartScreen 拦下，点「更多信息 → 仍要运行」（exe 未做代码签名，见 [FAQ](docs/FAQ.md)）。
 
 ## 从源码构建
 
 需要 Rust 1.77+、Node 18+、WebView2。
 
 ```bash
-git clone <repo>
+git clone https://github.com/aiyanjiangs/tuneport.git
 cd tuneport
 npm install
 
