@@ -1,0 +1,4 @@
+# 仓库右上角会显示 "Sponsor" 按钮
+# 文档: https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/displaying-a-sponsor-button-in-your-repository
+
+custom: ["https://afdian.com/a/aiyanjiangs"]
